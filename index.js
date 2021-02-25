@@ -17,6 +17,15 @@ app.get('/lttstock', (req, res) => {
     })
 });
 
+app.get('/rocket', (req, res) => {
+    res.status(200).send({
+        name: 'rocket',
+        isSleeping: true,
+        mother: "Hervine",
+        father: "Clément",
+    })
+});
+
 app.post('/lttstock/:id', (req, res) => {
     const { id } = req.params;
     const { name } = req.body;
