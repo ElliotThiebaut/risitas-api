@@ -11,6 +11,7 @@ const PORT = 5000;
 app.use(helmet());
 app.use(bodyParser.json());
 app.use(cors());
+app.enable("trust proxy");
 app.use(morgan('short', {
     stream: fs.createWriteStream('./access.log', {flags: 'a'})
 }));
