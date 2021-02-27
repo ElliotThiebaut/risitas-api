@@ -1,11 +1,19 @@
 const express = require('express');
-const cors = require("cors")
+const bodyParser = require('body-parser');
+const cors = require("cors");
+const helmet = require('helmet');
+const morgan = require('morgan');
+const fs = require('fs');
 
 const app = express();
 const PORT = 5000;
 
-app.use(cors())
-app.use( express.json() );
+app.use(helmet());
+app.use(bodyParser.json());
+app.use(cors());
+app.use(morgan('short', {
+    stream: fs.createWriteStream('./access.log', {flags: 'a'})
+}));
 
 app.listen(
     PORT,
@@ -13,31 +21,28 @@ app.listen(
     
 )
 
-app.get('/lttstock', (req, res) => {
+let productStockStatus = false;
+let productName = 'no information';
+let productUrl = 'no information';
+
+
+app.get('/lttstock', async (req, res) => {
     res.status(200).send({
-        hasStock: false,
-        url: 'lttstore.com'
+        hasStock: productStockStatus,
+        name: productName,
+        url: productUrl,
     })
 });
 
-app.get('/rocket', (req, res) => {
-    res.status(200).send({
-        name: 'rocket',
-        isSleeping: true,
-        mother: "Hervine",
-        father: "Clément",
-    })
-});
+app.put('/lttstock/', async (req, res) => {
+    const product = req.body;
+    if ((typeof product.stockStatus !== 'undefined') && product.name && product.url) {
+        productStockStatus = product.stockStatus;
+        productName = product.name;
+        productUrl = product.url;
 
-app.post('/lttstock/:id', (req, res) => {
-    const { id } = req.params;
-    const { name } = req.body;
-
-    if (!name){
-        res.status(418).send({ message: 'We need a name !' })
+        res.status(200).send({message: 'Status updated'})
+    } else {
+        res.status(422).send({message: 'Wrong data input'})
     }
-
-    res.send({
-       lttstock: `The product ${name} with an ID of ${id}` 
-    })
 })
