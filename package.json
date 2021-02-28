@@ -1,15 +1,19 @@
 {
   "name": "risitas-api",
   "version": "1.0.0",
-  "description": "",
+  "description": "API for risitas discord bot made with node JS and express",
+  "author": "Elliot Thiebaut",
+  "license": "MIT",
   "main": "index.js",
+  "homepage": "https://github.com/ElliotThiebaut/risitas-api",
+  "engines": {
+    "node": "14.16.0",
+    "npm": "6.14.4"
+  },
   "scripts": {
-    "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
